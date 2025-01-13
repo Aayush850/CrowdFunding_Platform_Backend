@@ -5,7 +5,6 @@ import {
   UpdateDateColumn,
   ManyToOne,
   Entity,
-  JoinColumn,
   OneToMany,
 } from 'typeorm';
 import { CampaignsStatus } from './campaigns-status.enum';
