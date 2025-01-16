@@ -41,6 +41,7 @@ export class CampaignsController {
   }
 
   @Patch(':id')
+  @Roles(UserRole.ORGANIZER)
   update(
     @Param('id') id: number,
     @Body(ValidationPipe) updateCampaignDto: UpdateCampaignDto,
@@ -49,6 +50,7 @@ export class CampaignsController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.ORGANIZER)
   delete(@Param('id') id: number) {
     return this.campaignService.delete(id);
   }

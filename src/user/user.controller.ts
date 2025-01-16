@@ -13,11 +13,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ValidationPipe } from '@nestjs/common';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from './dto/roles.decorator';
+import { UserRole } from './dto/user-role.enum';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
   @Get()
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   findAll() {
     return this.userService.findAll();
   }
@@ -33,6 +38,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: number,
@@ -41,6 +47,7 @@ export class UserController {
     return this.userService.update(id, UpdateUserDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   delete(@Param('id') id: number) {
     return this.userService.delete;

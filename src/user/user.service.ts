@@ -12,8 +12,9 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
   async findAll() {
-    return 'This is coming from the user service';
+    return this.userRepository.find();
   }
+
   async create(createUserDto: CreateUserDto) {
     const { password } = createUserDto;
     const salt = await bcrypt.genSalt(10);
@@ -34,10 +35,12 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    return `This updates user with id ${id}`;
+    await this.findOne(id);
+    return this.userRepository.update(id, updateUserDto);
   }
   async delete(id: number) {
-    return `This deletes user with id ${id}`;
+    await this.findOne(id);
+    return this.userRepository.delete(id);
   }
 
   async findOneByEmail(email: string) {
